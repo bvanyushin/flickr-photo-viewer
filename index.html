@@ -6,25 +6,36 @@
     <meta charset="utf-8">
   </head>
   <body>
+    <div id="paging">
+      <p>Current page <span data-bind="text: currentPage()"></span></p>
+      <p>Photos per page <select data-bind='options: pageSizesCollection, value: photosPerPage'> </select>
+      <p>
+
+        <span data-bind="click: (currentPage() > 1) ? goToFirstPage() : ''">First page </span>
+        <span data-bind="click: (currentPage() > 1) ? goToPreviousPage() : '' ">Previous page </span>
+        <span data-bind="click: (currentPage() < pageCount()) ? goToNextPage() : ''">Next page </span>
+        <span data-bind="click: (currentPage() < pageCount()) ? goToLastPage() : ''">Last page</span>
+      <p>
+    </div>
+
     <div id="albums-list">
       <ul data-bind="foreach: albums">
         <li data-bind="text: title,
-                       css: { selected: $data == $parent.chosenAlbumID() },
+                       css: { selected: $data == $parent.currentAlbum() },
                        click: $parent.goToAlbum"></li>
       </ul>
     </div>
     <div id="image-container">
       <p class="sortpad" data-bind="click: sortPhotosByTitle()">Sort by title</p>
-      <ul data-bind="foreach: { data: chosenAlbumPhotos, afterRender: loadPreview }">
+      <ul data-bind="foreach: { data: currentPageContent(), afterRender: loadPreview }">
         <li>
           <p data-bind="text: title"></p>
-          <!-- ToDo Add alt attribute with title -->
           <img class="preview" src="img/loading.gif" data-bind="attr: { id: id }, click: $parent.loadPhoto"> 
         </li>
       </ul>
     </div>
 
-    <div class="viewMail" data-bind="with: chosenPhoto()">
+    <div class="viewPhoto" data-bind="with: currentPhoto()">
       <img data-bind="attr: {src: url}">
       <p data-bind="text: title"></p>
     </div>
@@ -33,6 +44,7 @@
     <script type="text/javascript" src="js/knockout-3.3.0.js"></script>
     <script src="js/view_model.js"></script>
   </body>
+
 </html>
 
     
