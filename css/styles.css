@@ -1,6 +1,12 @@
 #albums-list {
   border: 1px solid black;
   width: 250px;
+  float: left;
+}
+
+#image-container {
+  float: right;
+  width: 70%;
 }
 
 ul {
@@ -12,6 +18,18 @@ li {
   padding: 5px;
 }
 
+#albums-list li,
+img, 
+.sortpad {
+  cursor: pointer;
+}
+
+.preview {
+  padding: 2px;
+  border: 1px solid black;
+  width: 128px;
+  display: inline;
+}
 .selected {
   border: 1px solid black;
   background-color: yellow;

@@ -14,11 +14,19 @@
       </ul>
     </div>
     <div id="image-container">
+      <p class="sortpad" data-bind="click: sortPhotosByTitle()">Sort by title</p>
       <ul data-bind="foreach: { data: chosenAlbumPhotos, afterRender: loadPreview }">
         <li>
-          <img src="img/loading.gif" data-bind="attr: { id: id }, click: $parent.loadPhoto"> 
+          <p data-bind="text: title"></p>
+          <!-- ToDo Add alt attribute with title -->
+          <img class="preview" src="img/loading.gif" data-bind="attr: { id: id }, click: $parent.loadPhoto"> 
         </li>
       </ul>
+    </div>
+
+    <div class="viewMail" data-bind="with: chosenPhoto()">
+      <img data-bind="attr: {src: url}">
+      <p data-bind="text: title"></p>
     </div>
 
     <script src="js/jquery-2.1.3.min.js"></script>
