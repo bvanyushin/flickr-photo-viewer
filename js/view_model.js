@@ -37,7 +37,7 @@ function FlickrAppViewModel() {
   self.goToAlbum = function (album) {
     self.currentAlbum(album);
     self.getAlbumContent();
-    self.goToPage(1);
+    // self.goToPage(1); // It doesn't work here for the first call of goToAlbum 
   }
 
   self.getAlbumContent = function () {
