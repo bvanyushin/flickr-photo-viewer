@@ -29,7 +29,7 @@
       </ul>
     </div>
     <div id="image-container">
-      <p class="sortpad" data-bind="click: sortPhotosByTitle()">Sort by title</p>
+      <p class="sortpad" data-bind="click: sortPhotosByTitle()">Sort entire album by title in <span data-bind="text: sortOrder()"></span> order</p>
       <ul data-bind="foreach: { data: currentPageContent(), afterRender: loadPreview }">
         <li>
           <p data-bind="text: title"></p>

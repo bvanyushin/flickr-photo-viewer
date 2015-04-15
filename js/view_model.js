@@ -53,6 +53,7 @@ function FlickrAppViewModel() {
   // photos
 
   self.currentPhoto = ko.observable();
+  self.sortOrder = ko.observable('descending');
 
   self.loadPreview = function(element, index, data) {
     $("#" + index.id).attr('src', index.previewUrl);
@@ -64,11 +65,20 @@ function FlickrAppViewModel() {
   };
 
   self.sortPhotosByTitle = function() {
+    var direction;
+    if (self.sortOrder() == 'ascending') {
+      direction = 1;
+      self.sortOrder('descending');
+    } else {
+      direction = -1;
+      self.sortOrder('ascending');
+    }
     this.items = self.currentAlbumContent();
     this.items.sort(function(a, b) {
-      return a.title < b.title ? -1 : 1;
+      return a.title < b.title ? -direction : direction;
     });
     self.currentAlbumContent(this.items);
+    self.goToPage(self.currentPage());
   }
 
   // pages
