@@ -1,7 +1,8 @@
 #albums-list {
   border: 1px solid black;
-  width: 250px;
+  width: 220px;
   float: left;
+  margin: 10px;
 }
 
 #image-container {

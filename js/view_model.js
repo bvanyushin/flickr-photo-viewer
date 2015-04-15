@@ -95,15 +95,15 @@ function FlickrAppViewModel() {
     self.goToPage(1);
   }
 
+  self.goToLastPage = function() {
+    self.goToPage(self.pageCount());
+  }
+
   self.goToPreviousPage = function() {
     if (self.currentPage() > 1) 
       self.goToPage(self.currentPage() - 1)
     else
       self.goToFirstPage()
-  }
-
-  self.goToLastPage = function() {
-    self.goToPage(self.pageCount());
   }
 
   self.goToNextPage = function() {

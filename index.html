@@ -8,6 +8,8 @@
   <body>
     <div id="paging">
       <p>Current page <span data-bind="text: currentPage()"></span></p>
+      <p>Total pages <span data-bind="text: pageCount()"></span></p>
+      <p>Total photos in album <span data-bind="text: currentAlbumContent().length"></span></p>
       <p>Photos per page <select data-bind='options: pageSizesCollection, value: photosPerPage'> </select>
       <p>
 
@@ -19,6 +21,7 @@
     </div>
 
     <div id="albums-list">
+      <h3>Albums list:</h3>
       <ul data-bind="foreach: albums">
         <li data-bind="text: title,
                        css: { selected: $data == $parent.currentAlbum() },
