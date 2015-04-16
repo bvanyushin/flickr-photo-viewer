@@ -9,15 +9,16 @@ function FlickrAppViewModel() {
 
   function Photo (data) {
     this.id = data.id;
-    this.url = 'http://farm' + data.farm + '.static.flickr.com/' + data.server + '/' + data.id + '_' + data.secret + '.jpg';
-    this.previewUrl = 'http://farm' + data.farm + '.static.flickr.com/' + data.server + '/' + data.id + '_' + data.secret + '_m.jpg';
+    var url = 'http://farm' + data.farm + '.static.flickr.com/' + data.server + '/' + data.id + '_' + data.secret;
+    this.url = url + '.jpg';
+    this.previewUrl = url + '_m.jpg';
     this.title = data.title;
   }
 
   var apiUrl = "https://api.flickr.com/services/rest/?";
   var user = "43266322@N06";
   var apiKey = "82aa4c342525ac3bf02945d35a2e1c7b";
-  var callbackFormat = "&format=json&nojsoncallback=1"
+  var callbackFormat = "&format=json&nojsoncallback=1";
   
   // albums
   self.albums = ko.observableArray([]);
@@ -33,13 +34,12 @@ function FlickrAppViewModel() {
       self.albums(mappedAlbums);
       self.goToAlbum(mappedAlbums[0]);
     });
-  }
+  };
 
   self.goToAlbum = function (album) {
     self.currentAlbum(album);
     self.getAlbumContent();
-    // self.goToPage(1); // It doesn't work here for the first call of goToAlbum 
-  }
+  };
 
   self.getAlbumContent = function () {
     var method = "flickr.photosets.getPhotos";
@@ -47,16 +47,16 @@ function FlickrAppViewModel() {
     $.getJSON(callUrl, function(allData) {
       var mappedPhotos = $.map(allData.photoset.photo, function(item) { return new Photo(item) });
       self.currentAlbumContent(mappedPhotos);
-      self.goToPage(1);  // I don't like this place
+      self.goToPage(1);
     });
-  }
+  };
 
   // photos
 
   self.currentPhoto = ko.observable();
   self.sortOrder = ko.observable('descending');
 
-  self.loadPreview = function(element, index, data) {
+  self.loadPreview = function(element, index) {
     $("#" + index.id).attr('src', index.previewUrl);
   };
 
@@ -67,7 +67,7 @@ function FlickrAppViewModel() {
 
   self.sortPhotosByTitle = function() {
     var direction;
-    if (self.sortOrder() == 'ascending') {
+    if (self.sortOrder() === 'ascending') {
       direction = 1;
       self.sortOrder('descending');
     } else {
@@ -80,7 +80,7 @@ function FlickrAppViewModel() {
     });
     self.currentAlbumContent(this.items);
     self.goToPage(self.currentPage());
-  }
+  };
 
   // pages
 
@@ -100,40 +100,42 @@ function FlickrAppViewModel() {
     self.currentPage(num);
     self.currentPhoto(null);
     self.getCurrentPageContent();
-  }
+  };
 
   self.goToFirstPage = function() {
     self.goToPage(1);
-  }
+  };
 
   self.goToLastPage = function() {
     self.goToPage(self.pageCount());
-  }
+  };
 
   self.goToPreviousPage = function() {
-    if (self.currentPage() > 1) 
+    if (self.currentPage() > 1) {
       self.goToPage(self.currentPage() - 1)
-    else
+    } else {
       self.goToFirstPage()
-  }
+    }
+  };
 
   self.goToNextPage = function() {
-    if (self.currentPage() < self.pageCount()) 
-      self.goToPage(self.currentPage() + 1)
-    else
-      self.goToLastPage()
-  }
+    if (self.currentPage() < self.pageCount()) {
+      self.goToPage(self.currentPage() + 1);
+    } else {
+      self.goToLastPage();
+    };
+  };
 
   self.getCurrentPageContent = function() {
     var fromIndex = (self.currentPage() - 1) * self.photosPerPage();
     var toIndex = fromIndex + self.photosPerPage();
     self.currentPageContent(self.currentAlbumContent().slice(fromIndex, toIndex));
-  }
+  };
 
   // init
   self.getAlbumsList();
 };
 
 
-flickrAppViewModel = new FlickrAppViewModel;
+var flickrAppViewModel = new FlickrAppViewModel();
 ko.applyBindings(flickrAppViewModel);
