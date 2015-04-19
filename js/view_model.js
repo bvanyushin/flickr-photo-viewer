@@ -1,6 +1,11 @@
 function FlickrAppViewModel() {
   var self = this;
 
+  var apiUrl = "https://api.flickr.com/services/rest/?";
+  var userID = "43266322@N06";
+  var apiKey = "82aa4c342525ac3bf02945d35a2e1c7b";
+  var callbackFormat = "&format=json&nojsoncallback=1";
+
   function Album(data) {
     this.id = data.id;
     this.title = data.title._content;
@@ -15,11 +20,26 @@ function FlickrAppViewModel() {
     this.title = data.title;
   }
 
-  var apiUrl = "https://api.flickr.com/services/rest/?";
-  var user = "43266322@N06";
-  var apiKey = "82aa4c342525ac3bf02945d35a2e1c7b";
-  var callbackFormat = "&format=json&nojsoncallback=1";
+  function User(data) {
+    this.id = data.id;
+    this.username = data.username._content;
+    this.realname = data.realname._content;
+    this.photosCount = data.photos.count._content;
+  }
   
+  // user
+  self.currentUser = ko.observable();
+
+  self.getUserInfo = function() {
+    var method = "flickr.people.getInfo";
+    var callUrl = apiUrl + "method=" + method + "&api_key=" + apiKey + "&user_id=" + userID + callbackFormat;
+    $.getJSON(callUrl, function(allData) {
+      var user =  new User (allData.person);
+      self.currentUser(user);
+    });
+
+  };
+
   // albums
   self.albums = ko.observableArray([]);
   self.currentAlbum = ko.observable();
@@ -27,7 +47,7 @@ function FlickrAppViewModel() {
 
   self.getAlbumsList = function() {
     var method = "flickr.photosets.getList";
-    var callUrl = apiUrl + "method=" + method + "&api_key=" + apiKey + "&user_id=" + user + callbackFormat;
+    var callUrl = apiUrl + "method=" + method + "&api_key=" + apiKey + "&user_id=" + userID + callbackFormat;
 
     $.getJSON(callUrl, function(allData) {
       var mappedAlbums = $.map(allData.photosets.photoset, function(item) { return new Album(item) });
@@ -43,7 +63,7 @@ function FlickrAppViewModel() {
 
   self.getAlbumContent = function () {
     var method = "flickr.photosets.getPhotos";
-    var callUrl = apiUrl + "method=" + method + "&api_key=" + apiKey + "&photoset_id=" + self.currentAlbum().id + "&user_id=" + user + callbackFormat;
+    var callUrl = apiUrl + "method=" + method + "&api_key=" + apiKey + "&photoset_id=" + self.currentAlbum().id + "&user_id=" + userID + callbackFormat;
     $.getJSON(callUrl, function(allData) {
       var mappedPhotos = $.map(allData.photoset.photo, function(item) { return new Photo(item) });
       self.currentAlbumContent(mappedPhotos);
@@ -133,6 +153,7 @@ function FlickrAppViewModel() {
   };
 
   // init
+  self.getUserInfo();
   self.getAlbumsList();
 };
 

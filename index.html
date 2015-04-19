@@ -1,54 +1,79 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Flickr App</title>
-    <link rel="stylesheet" href="css/styles.css" />
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Flickr Photo viewer</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
   </head>
   <body>
-    <div id="paging">
-      <p>Current page <span data-bind="text: currentPage()"></span></p>
-      <p>Total pages <span data-bind="text: pageCount()"></span></p>
-      <p>Total photos in album <span data-bind="text: currentAlbumContent().length"></span></p>
-      <p>Photos per page <select data-bind='options: pageSizesCollection, value: photosPerPage'> </select>
-      <p>
-
-        <span data-bind="click: (currentPage() > 1) ? goToFirstPage() : ''">First page </span>
-        <span data-bind="click: (currentPage() > 1) ? goToPreviousPage() : '' ">Previous page </span>
-        <span data-bind="click: (currentPage() < pageCount()) ? goToNextPage() : ''">Next page </span>
-        <span data-bind="click: (currentPage() < pageCount()) ? goToLastPage() : ''">Last page</span>
-      <p>
-    </div>
-
-    <div id="albums-list">
-      <h3>Albums list:</h3>
-      <ul data-bind="foreach: albums">
-        <li data-bind="text: title,
-                       css: { selected: $data == $parent.currentAlbum() },
-                       click: $parent.goToAlbum"></li>
-      </ul>
-    </div>
-    <div id="image-container">
-      <p class="sortpad" data-bind="click: sortPhotosByTitle()">Sort entire album by title in <span data-bind="text: sortOrder()"></span> order</p>
-      <ul data-bind="foreach: { data: currentPageContent(), afterRender: loadPreview }">
-        <li>
+    <header></header>
+    <div class="row">
+      <aside class="col-md-3">
+         <div data-bind="with: currentUser">
+           <h1 data-bind="text: username"></h1>
+         </div>
+         <div class="panel panel-info"> 
+          <div class="panel-heading">Albums list</div>
+          <div class="panel-body">
+            <div class="list-group" data-bind="foreach: albums">
+              <a href="#" class="list-group-item" 
+                          data-bind="text: title,
+                                     css: { active: $data == $parent.currentAlbum() },
+                                     click: $parent.goToAlbum">
+              </a>
+            </div>
+          </div>
+         </div> 
+      </aside>
+      <div class="jumbotron">
+        <h2 data-bind="text: (currentAlbum()) ? currentAlbum().title : 'Wait a second'"></h2>
+        <p data-bind="html: (currentAlbum()) ? currentAlbum().description : 'Wait a second'"></p>
+      </div>
+      <section class="col-md-9">
+        <div class="well well-sm col-md-8 col-md-offset-1 ">
+          <p>You are on page <span data-bind="text: currentPage()"></span> of <span data-bind="text: pageCount()"></span>. Total <span data-bind="text: currentAlbumContent().length"></span> photos, <span data-bind="text: photosPerPage()"></span> photos per page.</p>
+          <ul class="pager ">
+            <li data-bind="css: (currentPage() <= 1) ? 'disabled previous' : 'previous'">
+              <a href="#" data-bind="click: goToFirstPage()">First</a>
+            </li>
+            <li data-bind="css: (currentPage() <= 1) ? 'disabled' : ''">
+              <a href="#" data-bind="click: goToPreviousPage()">Previous</a>
+            </li>
+            <li data-bind="css: (currentPage() >= pageCount()) ? 'disabled' : ''">
+              <a href="#" data-bind="click: goToNextPage()">Next</a>
+            </li>
+            <li data-bind="css: (currentPage() >= pageCount()) ? 'disabled next' : 'next'">
+              <a href="#" data-bind="click: (currentPage() < pageCount()) ? goToLastPage() : ''">Last</a>
+            </li>
+          </ul>
+        </div>
+        <div class= "row" data-bind="foreach: { data: currentPageContent(), afterRender: loadPreview }">
+          <div class="col-sm-4">  
+            <img src="img/loading.gif" data-bind="attr: { id: id }, click: $parent.loadPhoto" alt="" class="thumbnail">
+          </div>
+        </div>
+        <div class="viewPhoto" data-bind="with: currentPhoto()">
+          <img data-bind="attr: {src: url}">
           <p data-bind="text: title"></p>
-          <img class="preview" src="img/loading.gif" data-bind="attr: { id: id }, click: $parent.loadPhoto"> 
-        </li>
-      </ul>
+        </div>
+      </section>
     </div>
 
-    <div class="viewPhoto" data-bind="with: currentPhoto()">
-      <img data-bind="attr: {src: url}">
-      <p data-bind="text: title"></p>
-    </div>
-
-    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
-    <script type="text/javascript" src="http://knockoutjs.com/downloads/knockout-3.3.0.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="http://knockoutjs.com/downloads/knockout-3.3.0.js"></script>
     <script src="js/view_model.js"></script>
-
   </body>
-
 </html>
-
-    
