@@ -102,14 +102,13 @@ function FlickrAppViewModel() {
   };
 
   // pages
+  self.photosPerPage = 9;
 
   self.pageCount = ko.pureComputed(function() {
     return Math.ceil( self.currentAlbumContent().length / self.photosPerPage() );
   });
   self.currentPage = ko.observable();
   self.currentPageContent = ko.observableArray([]);
-  self.photosPerPage = ko.observable(9);
-  self.pageSizesCollection = [3, 6, 9, 12];
 
   self.photosPerPage.subscribe(function() {
     self.goToFirstPage();
