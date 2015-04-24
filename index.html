@@ -24,6 +24,11 @@
          <div data-bind="with: currentUser">
            <h1 data-bind="text: username"></h1>
          </div>
+         <div class="jumbotron">
+         <p>Current Album:</p>
+          <h2 data-bind="text: (currentAlbum()) ? currentAlbum().title : 'Wait a second'"></h2>
+          <p data-bind="html: (currentAlbum()) ? currentAlbum().description : 'Wait a second'"></p>
+         </div>
          <div class="panel panel-info"> 
           <div class="panel-heading">Albums list</div>
           <div class="panel-body">
@@ -37,10 +42,6 @@
           </div>
          </div> 
       </aside>
-      <div class="jumbotron">
-        <h2 data-bind="text: (currentAlbum()) ? currentAlbum().title : 'Wait a second'"></h2>
-        <p data-bind="html: (currentAlbum()) ? currentAlbum().description : 'Wait a second'"></p>
-      </div>
       <section class="col-md-9">
         <div class="well well-sm col-md-8 col-md-offset-1 ">
           <p>You are on page <span data-bind="text: currentPage()"></span> of <span data-bind="text: pageCount()"></span>. Total <span data-bind="text: currentAlbumContent().length"></span> photos, <span data-bind="text: photosPerPage()"></span> photos per page.</p>

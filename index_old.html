@@ -28,20 +28,7 @@
                        click: $parent.goToAlbum"></li>
       </ul>
     </div>
-    <div id="image-container">
-      <p class="sortpad" data-bind="click: sortPhotosByTitle()">Sort entire album by title in <span data-bind="text: sortOrder()"></span> order</p>
-      <ul data-bind="foreach: { data: currentPageContent(), afterRender: loadPreview }">
-        <li>
-          <p data-bind="text: title"></p>
-          <img class="preview" src="img/loading.gif" data-bind="attr: { id: id }, click: $parent.loadPhoto"> 
-        </li>
-      </ul>
-    </div>
-
-    <div class="viewPhoto" data-bind="with: currentPhoto()">
-      <img data-bind="attr: {src: url}">
-      <p data-bind="text: title"></p>
-    </div>
+    
 
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script type="text/javascript" src="http://knockoutjs.com/downloads/knockout-3.3.0.js"></script>
