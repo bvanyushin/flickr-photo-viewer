@@ -5,29 +5,15 @@ function FlickrAppViewModel() {
   var userID = "43266322@N06";
   var apiKey = "82aa4c342525ac3bf02945d35a2e1c7b";
   var callbackFormat = "&format=json&nojsoncallback=1";
-
-  function Album(data) {
-    this.id = data.id;
-    this.title = data.title._content;
-    this.description = data.description._content;
-  }
-
-  function Photo (data) {
-    this.id = data.id;
-    var url = 'http://farm' + data.farm + '.static.flickr.com/' + data.server + '/' + data.id + '_' + data.secret;
-    this.url = url + '.jpg';
-    this.previewUrl = url + '_m.jpg';
-    this.title = data.title;
-  }
-
+  
+  // user
   function User(data) {
     this.id = data.id;
     this.username = data.username._content;
     this.realname = data.realname._content;
     this.photosCount = data.photos.count._content;
   }
-  
-  // user
+
   self.currentUser = ko.observable();
 
   self.getUserInfo = function() {
@@ -41,6 +27,12 @@ function FlickrAppViewModel() {
   };
 
   // albums
+  function Album(data) {
+    this.id = data.id;
+    this.title = data.title._content;
+    this.description = data.description._content;
+  }
+  
   self.albums = ko.observableArray([]);
   self.currentAlbum = ko.observable();
   self.currentAlbumContent = ko.observableArray([]);
@@ -72,6 +64,13 @@ function FlickrAppViewModel() {
   };
 
   // photos
+  function Photo (data) {
+    this.id = data.id;
+    var url = 'http://farm' + data.farm + '.static.flickr.com/' + data.server + '/' + data.id + '_' + data.secret;
+    this.url = url + '.jpg';
+    this.previewUrl = url + '_m.jpg';
+    this.title = data.title;
+  }
 
   self.currentPhoto = ko.observable();
   self.sortOrder = ko.observable('descending');
