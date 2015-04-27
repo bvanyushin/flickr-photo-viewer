@@ -19,11 +19,6 @@
   </head>
   <body>
     <header></header>
-    <!-- adv-paging -->
-    <ul>
-      <li>1</li>
-      <li>2</li>
-    </ul>
 
     <div class="row">
       <aside class="col-md-3">
@@ -49,8 +44,15 @@
          </div> 
       </aside>
       <section class="col-md-9">
+        <div>
+          <ul class="pagination">
+            <li data-bind="css: (currentPage() <= 1) ? 'active' : ''">
+              <a href="#" data-bind="click: goToFirstPage()">1</a>
+            </li>
+          </ul>
+        </div>
         <div class="well well-sm col-md-8 col-md-offset-1 ">
-          <p>You are on page <span data-bind="text: currentPage()"></span> of <span data-bind="text: pageCount()"></span>. Total <span data-bind="text: currentAlbumContent().length"></span> photos, <span data-bind="text: photosPerPage()"></span> photos per page.</p>
+          <p>You are on page <span data-bind="text: currentPage()"></span> of <span data-bind="text: pageCount()"></span>. Total <span data-bind="text: currentAlbumContent().length"></span> photos, <span data-bind="text: photosPerPage"></span> photos per page.</p>
           <ul class="pager ">
             <li data-bind="css: (currentPage() <= 1) ? 'disabled previous' : 'previous'">
               <a href="#" data-bind="click: goToFirstPage()">First</a>
@@ -81,7 +83,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="http://knockoutjs.com/downloads/knockout-3.3.0.js"></script>
-    <script src="js/paging.js"></script>
     <script src="js/view_model.js"></script>
   </body>
 </html>

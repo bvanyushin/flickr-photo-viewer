@@ -58,9 +58,64 @@ function FlickrAppViewModel() {
     var callUrl = apiUrl + "method=" + method + "&api_key=" + apiKey + "&photoset_id=" + self.currentAlbum().id + "&user_id=" + userID + callbackFormat;
     $.getJSON(callUrl, function(allData) {
       var mappedPhotos = $.map(allData.photoset.photo, function(item) { return new Photo(item) });
-      self.currentAlbumContent(mappedPhotos);
+      var mappedPages = [];
+      for (var i = 0; mappedPhotos[i * self.photosPerPage]; i++) {
+        mappedPages.push(mappedPhotos.slice(i * self.photosPerPage, (i + 1) * self.photosPerPage));
+      };
+      self.currentAlbumContent(mappedPages);
       self.goToPage(1);
     });
+  };
+
+  // pages
+  self.photosPerPage = 9;
+
+  self.pageCount = ko.observable();
+  self.currentPage = ko.observable();
+  self.currentPageContent = ko.observableArray([]);
+
+  self.currentAlbumContent.subscribe( function() {
+    self.pageCount(self.currentAlbumContent().length);
+    self.constructPaging();
+  });
+
+  self.constructPaging = function() {
+    var $p = $(".pagination");
+    for (var i = 1; i <= self.pageCount(); i++) {
+      var tagText = "<li data-bind=\"css: (currentPage() <= " + i + ") ? 'active' : ''\">"
+      tagText = tagText + "<a href='#'>" + i + "</a></li>"
+      $p.append(tagText);
+    };
+  };
+
+  self.goToPage = function(num) {
+    self.currentPage(num);
+    self.currentPhoto(null);
+    self.currentPageContent( self.currentAlbumContent()[num - 1] );
+  };
+
+  self.goToFirstPage = function() {
+    self.goToPage(1);
+  };
+
+  self.goToLastPage = function() {
+    self.goToPage(self.pageCount());
+  };
+
+  self.goToPreviousPage = function() {
+    if (self.currentPage() > 1) {
+      self.goToPage(self.currentPage() - 1)
+    } else {
+      self.goToFirstPage()
+    }
+  };
+
+  self.goToNextPage = function() {
+    if (self.currentPage() < self.pageCount()) {
+      self.goToPage(self.currentPage() + 1);
+    } else {
+      self.goToLastPage();
+    };
   };
 
   // photos
@@ -99,55 +154,6 @@ function FlickrAppViewModel() {
     });
     self.currentAlbumContent(this.items);
     self.goToPage(self.currentPage());
-  };
-
-  // pages
-  self.photosPerPage = 9;
-
-  self.pageCount = ko.pureComputed(function() {
-    return Math.ceil( self.currentAlbumContent().length / self.photosPerPage() );
-  });
-  self.currentPage = ko.observable();
-  self.currentPageContent = ko.observableArray([]);
-
-  self.photosPerPage.subscribe(function() {
-    self.goToFirstPage();
-  });
-
-  self.goToPage = function(num) {
-    self.currentPage(num);
-    self.currentPhoto(null);
-    self.getCurrentPageContent();
-  };
-
-  self.goToFirstPage = function() {
-    self.goToPage(1);
-  };
-
-  self.goToLastPage = function() {
-    self.goToPage(self.pageCount());
-  };
-
-  self.goToPreviousPage = function() {
-    if (self.currentPage() > 1) {
-      self.goToPage(self.currentPage() - 1)
-    } else {
-      self.goToFirstPage()
-    }
-  };
-
-  self.goToNextPage = function() {
-    if (self.currentPage() < self.pageCount()) {
-      self.goToPage(self.currentPage() + 1);
-    } else {
-      self.goToLastPage();
-    };
-  };
-
-  self.getCurrentPageContent = function() {
-    var fromIndex = (self.currentPage() - 1) * self.photosPerPage();
-    var toIndex = fromIndex + self.photosPerPage();
-    self.currentPageContent(self.currentAlbumContent().slice(fromIndex, toIndex));
   };
 
   // init
