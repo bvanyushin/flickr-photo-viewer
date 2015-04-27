@@ -76,7 +76,6 @@ function FlickrAppViewModel() {
 
   self.currentAlbumContent.subscribe( function() {
     self.pageCount(self.currentAlbumContent().length);
-    self.constructPaging();
   });
 
 // // Should be moved to new binding, not working yet
