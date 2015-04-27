@@ -79,14 +79,15 @@ function FlickrAppViewModel() {
     self.constructPaging();
   });
 
-  self.constructPaging = function() {
-    var $p = $(".pagination");
-    for (var i = 1; i <= self.pageCount(); i++) {
-      var tagText = "<li data-bind=\"css: (currentPage() <= " + i + ") ? 'active' : ''\">"
-      tagText = tagText + "<a href='#'>" + i + "</a></li>"
-      $p.append(tagText);
-    };
-  };
+// // Should be moved to new binding, not working yet
+//   self.constructPaging = function() {
+//     var $p = $(".pagination");
+//     for (var i = 1; i <= self.pageCount(); i++) {
+//       var tagText = "<li data-bind=\"css: (currentPage() <= " + i + ") ? 'active' : ''\">"
+//       tagText = tagText + "<a href='#'>" + i + "</a></li>"
+//       $p.append(tagText);
+//     };
+//   };
 
   self.goToPage = function(num) {
     self.currentPage(num);
