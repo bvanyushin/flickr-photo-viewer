@@ -28,9 +28,11 @@ function FlickrAppViewModel() {
 
   // albums
   function Album(data) {
+    console.log(data);
     this.id = data.id;
     this.title = data.title._content;
     this.description = data.description._content;
+    this.totalCount = data.photos;
   }
   
   self.albums = ko.observableArray([]);
@@ -59,8 +61,10 @@ function FlickrAppViewModel() {
     $.getJSON(callUrl, function(allData) {
       var mappedPhotos = $.map(allData.photoset.photo, function(item) { return new Photo(item) });
       var mappedPages = [];
-      for (var i = 0; mappedPhotos[i * self.photosPerPage]; i++) {
+      var i = 0; 
+      while (mappedPhotos[i * self.photosPerPage]) {
         mappedPages.push(mappedPhotos.slice(i * self.photosPerPage, (i + 1) * self.photosPerPage));
+        i += 1;
       };
       self.currentAlbumContent(mappedPages);
       self.goToPage(1);

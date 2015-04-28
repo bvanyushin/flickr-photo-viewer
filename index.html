@@ -49,7 +49,7 @@
           </ul>
         </div> -->
         <div class="well well-sm col-md-8 col-md-offset-1 ">
-          <p>You are on page <span data-bind="text: currentPage()"></span> of <span data-bind="text: pageCount()"></span>. Total <span data-bind="text: currentAlbumContent().length"></span> photos, <span data-bind="text: photosPerPage"></span> photos per page.</p>
+          <p>You are on page <span data-bind="text: (currentAlbum()) ? currentAlbum().totalCount : 'counting...'"></span> photos, <span data-bind="text: photosPerPage"></span> photos per page.</p>
           <ul class="pager ">
             <li data-bind="css: (currentPage() <= 1) ? 'disabled previous' : 'previous'">
               <a href="#" data-bind="click: goToFirstPage()">First</a>
